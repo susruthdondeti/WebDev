@@ -11,48 +11,101 @@
 
   <style>
     /* Base styles */
-    body {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      min-height: 100vh;
-      margin: 0;
+    body{
+      background: #f7f7f9; /* lighter body like the reference */
+      min-height: 100vh; margin:0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    h1 {
-      color: white;
-      text-align: center;
-      margin-top: 100px;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Glass navbar */
-    .glass-navbar {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(5px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .glass-navbar .navbar-brand {
-      color: #fff !important;
-      text-shadow: 0 0 2px #000;
-    }
-
-    /* Glassy button links */
-    .glass-btn {
-      color: #fff !important;
-      padding: 6px 14px;
-      margin: 0 5px;
-      border-radius: 10px;
-      transition: all 0s ease;
-      text-shadow: 0 0 2px #000;
-    }
-
-    .glass-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
+    /* Liquid-glass navbar */
+    .glass-navbar{
+      background: rgba(255,255,255,.15);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .navbar.glass-navbar .navbar-brand,
+    .navbar.glass-navbar .nav-link{ color:#fff !important; text-shadow:0 0 2px #000; }
+    .glass-btn{
+      color:#fff!important; padding:6px 14px; margin:0 5px; border-radius:10px;
+      transition:.25s; text-shadow:0 0 2px #000;
+    }
+    .glass-btn:hover{
+      background: rgba(255,255,255,.25);
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    }
+    .navbar-toggler { border-color: rgba(255,255,255,.6); }
+    .navbar-toggler-icon { filter: invert(1); }
+
+    /* Page sections (modeled after your screenshot) */
+    main{ padding-top:96px; } /* offset for fixed nav */
+
+    .section{
+      padding: 64px 0;
+      position: relative;
+    }
+    .section.alt{
+      background: linear-gradient(135deg,#f1f1f5 0%,#ffffff 100%);
+      clip-path: polygon(0 0,100% 6%,100% 100%,0% 94%);
+    }
+
+    .kicker{
+      letter-spacing:.12em; font-size:.74rem; text-transform:uppercase; color:#8c8c95;
+    }
+    .section h2{ font-weight:700; letter-spacing:.01em; }
+    .muted{ color:#6b7280; }
+
+    .btn-pill{
+      border-radius: 9999px;
+      padding: .6rem 1.2rem;
+      font-weight:600;
+    }
+    .btn-ghost{
+      background:#fff; border:1px solid #e6e6ea;
+      box-shadow:0 6px 18px rgba(0,0,0,.06);
+    }
+    .btn-ghost:hover{ border-color:#d5d5dc; }
+
+    .img-cover{
+      width:100%; height:100%; object-fit:cover; border-radius:12px;
+      box-shadow:0 12px 28px rgba(0,0,0,.12);
+    }
+    .card-glass{
+      background: rgba(255,255,255,.85);
+      border:1px solid #eee;
+      border-radius:12px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    /* Gallery grid */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:14px;
+    }
+    @media (max-width: 992px){
+      .gallery-grid{ grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 576px){
+      .gallery-grid{ grid-template-columns: 1fr; }
+    }
+
+    /* Amenities */
+    .amen-list{ columns: 2; column-gap: 24px; padding-left:1rem; }
+    .amen-list li{ margin: .25rem 0; color:#4b5563; }
+    @media (max-width: 576px){ .amen-list{ columns:1; } }
+
+    /* Small helper to mimic the “angled” band behind some rows */
+    .band{
+      position:absolute; inset:0; z-index:-1;
+      background: repeating-linear-gradient(
+        -10deg,
+        #eeeeF5 0 22px,
+        #e7e7f2 22px 44px
+      );
+      opacity:.25; clip-path: polygon(0 10%,100% 0,100% 90%,0% 100%);
     }
   </style>
 </head>
@@ -60,38 +113,147 @@
 
   <!-- Glass Navbar -->
   <nav class="navbar navbar-expand-lg glass-navbar fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">MacOS Glass</a>
-      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    <div class="container">
+      <a class="navbar-brand fw-semibold" href="#">MacOS Glass</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link glass-btn" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link glass-btn" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link glass-btn" href="#">Portfolio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link glass-btn" href="#">Contact</a>
-          </li>
+          <li class="nav-item"><a class="nav-link glass-btn" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link glass-btn" href="#">About</a></li>
+          <li class="nav-item"><a class="nav-link glass-btn" href="#">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link glass-btn" href="#">Contact</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Page Content -->
-  <h1>Hello World</h1>
+  <!-- ====== Middle of page (modeled after your screenshot) ====== -->
+  <main>
+    <!-- Section 1: Image left, copy right -->
+    <section class="section">
+      <div class="container">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-6">
+            <img class="img-cover" src="https://images.unsplash.com/photo-1616594039964-ae9021a1beba?q=80&w=1400&auto=format&fit=crop" alt="Living room">
+          </div>
+          <div class="col-lg-6">
+            <div class="card-glass p-4 p-md-5">
+              <div class="kicker">Tailored to you</div>
+              <h2 class="mt-1">Floor Plans for Any Lifestyle</h2>
+              <p class="muted">
+                Choose from spacious one-, two-, and three-bedroom layouts with open-concept kitchens,
+                premium finishes, and light-filled rooms designed for modern living.
+              </p>
+              <a class="btn btn-dark btn-pill me-2" href="#">See All Floor Plans</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 (alt): Copy left, image right -->
+    <section class="section alt">
+      <div class="band"></div>
+      <div class="container">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-6 order-lg-2">
+            <img class="img-cover" src="https://images.unsplash.com/photo-1543899161-d044e847c221?q=80&w=1400&auto=format&fit=crop" alt="Friends at cafe">
+          </div>
+          <div class="col-lg-6 order-lg-1">
+            <div class="card-glass p-4 p-md-5">
+              <div class="kicker">In the heart of it all</div>
+              <h2 class="mt-1">Life in Zionsville</h2>
+              <p class="muted">
+                Enjoy quick access to dining, shops, parks, and top-rated schools—everything you need,
+                minutes from your door.
+              </p>
+              <a class="btn btn-ghost btn-pill" href="#">Our Neighborhood</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Kitchen photo + Gallery/Video buttons -->
+    <section class="section">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <img class="img-cover" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1400&auto=format&fit=crop" alt="Kitchen">
+          </div>
+          <div class="col-lg-6">
+            <div class="card-glass p-4 p-md-5 h-100 d-flex flex-column">
+              <div class="kicker">See yourself here</div>
+              <h2 class="mt-1">Gallery</h2>
+              <p class="muted">
+                Browse interiors and community spaces that blend comfort with style.
+              </p>
+              <div class="mt-auto">
+                <a class="btn btn-dark btn-pill me-2" href="#">Photo Gallery</a>
+                <a class="btn btn-ghost btn-pill" href="#">Video Tours</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini masonry-ish gallery just below (like the staggered row feel) -->
+        <div class="gallery-grid mt-4">
+          <img class="img-cover" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=900&auto=format&fit=crop" alt="">
+          <img class="img-cover" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=900&auto=format&fit=crop" alt="">
+          <img class="img-cover" src="https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=900&auto=format&fit=crop" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4 (alt): Amenities + Lifestyle card -->
+    <section class="section alt">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="card-glass p-4 p-md-5 h-100">
+              <div class="kicker">Where convenience and luxury meet</div>
+              <h2 class="mt-1">Amenities</h2>
+              <div class="row mt-3">
+                <div class="col-12">
+                  <ul class="amen-list">
+                    <li>Open-concept floor plans</li>
+                    <li>Quartz or granite countertops</li>
+                    <li>Stainless-steel appliances</li>
+                    <li>Walk-in closets</li>
+                    <li>In-home washer &amp; dryer</li>
+                    <li>Resort-style pool</li>
+                    <li>Fitness center</li>
+                    <li>Pet-friendly community</li>
+                    <li>Co-working lounge</li>
+                    <li>Garage parking available</li>
+                  </ul>
+                </div>
+              </div>
+              <a class="btn btn-ghost btn-pill mt-3" href="#">See Full List</a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="position-relative h-100">
+              <img class="img-cover" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1400&auto=format&fit=crop" alt="Lifestyle">
+              <div class="card-glass p-4 p-md-5 position-absolute bottom-0 start-0 m-3 m-md-4">
+                <div class="kicker">Explore life in Zionsville</div>
+                <h4 class="mb-3">Lifestyle Blog</h4>
+                <a class="btn btn-dark btn-pill" href="#">Read Articles</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
 
